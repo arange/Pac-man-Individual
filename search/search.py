@@ -86,7 +86,42 @@ def depthFirstSearch(problem):
     print "Is the start a goal?", problem.isGoalState(problem.getStartState())
     print "Start's successors:", problem.getSuccessors(problem.getStartState())
     """
+    # Command you should run is:
+    # python pacman.py -l mediumMaze -p SearchAgent -a fn=dfs
     "*** YOUR CODE HERE ***"
+    from util import Stack
+
+    print "Start:", problem.getStartState()
+    print "Is the start a goal?", problem.isGoalState(problem.getStartState())
+    print "Start's successors:", problem.getSuccessors(problem.getStartState())
+    
+    storage = Stack()
+    path = []
+    # example of state: (34, 16)
+    startState = problem.getStartState()
+    # example of successors: [((34, 15), 'South', 1), ((33, 16), 'West', 1)]
+    startNode = (startState,'STOP',0)
+    visitedList = []
+    storage.push([startNode])
+
+    while not storage.isEmpty():
+    	# path.append(storage.pop())
+    	path = storage.pop()
+    	currentNode = path[-1]
+    	currentState = currentNode[0]
+    	successors = problem.getSuccessors(currentState)
+    	if problem.isGoalState(currentState):
+    			return [x[1] for x in path][1:]
+    	if currentState not in visitedList:
+    		visitedList.append(currentState)
+    		for successor in successors:
+    			if successor[0] not in visitedList:
+    				# storage.push(successor)
+    				successorPath = path[:]
+    				successorPath.append(successor)
+    				storage.push(successorPath)
+
+
     util.raiseNotDefined()
 
 def breadthFirstSearch(problem):
