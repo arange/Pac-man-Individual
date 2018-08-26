@@ -159,20 +159,47 @@ def breadthFirstSearch(problem):
 def uniformCostSearch(problem):
 	"""Search the node of least total cost first."""
 	"*** YOUR CODE HERE ***"
-# 	Insert the root into the queue
-#   While the queue is not empty
-#       Dequeue the maximum priority element from the queue
-#       (If priorities are same, alphabetically smaller path is chosen)
-#       If the path is ending in the goal state, print the path and exit
-#       Else
-#             Insert all the children of the dequeued element, with the cumulative costs as priority
+
 	# storage stores all the possible routes
 	storage = util.PriorityQueue()
 	# manually put starting node into storage
 	startState = problem.getStartState()
 	startNode = (startState,'Stop',0)
-	storage.push([startNode],0)
+	# initially the cost of starting point is set to 0
+	storage.push([startNode], 0)
 
+	visitedList = []
+
+	while not storage.isEmpty():
+		# Dequeue the maximum priority element from the queue
+		route = storage.pop()
+
+		currentNode = route[-1]
+		currentState = currentNode[0]
+
+		if problem.isGoalState(currentState):
+			# return the correct route (directions) from 2nd node to goal 
+			directions = []
+			for node in route:
+				directions.append(node[1])
+			return directions[1:]
+
+		# check if current node was visited
+		if currentState not in visitedList:
+			# insert current node into visited list
+			visitedList.append(currentState)
+
+			successors = problem.getSuccessors(currentState)
+			for successor in successors:
+				# print successor
+				if successor[0] not in visitedList:
+					successorPath = route[:]
+					p_successor = (successor[0], successor[1], successor[2] + currentNode[2])
+					newPriority = p_successor[2]
+					successorPath.append(p_successor)
+					storage.push(successorPath, newPriority)
+
+	return False
 
 def nullHeuristic(state, problem=None):
 	"""
