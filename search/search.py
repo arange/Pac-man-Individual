@@ -74,24 +74,29 @@ def tinyMazeSearch(problem):
 
 def blindSearch(problem,structure):
 	"*** YOUR CODE HERE ***"
-	
 
 	# print "Start:", problem.getStartState()
 	# print "Is the start a goal?", problem.isGoalState(problem.getStartState())
 	# print "Start's successors:", problem.getSuccessors(problem.getStartState())
 	
-	# Store the path from start point to the current state
-	storage = structure
 	# example of state: (34, 16)
-	startState = problem.getStartState()
 	# example of successors: [((34, 15), 'South', 1), ((33, 16), 'West', 1)]
+
+	# storage stores all current poissible routes
+	storage = structure
+	# manually put starting node into storage
+	startState = problem.getStartState()
 	startNode = (startState,'Stop',0)
-	visitedList = []
 	storage.push([startNode])
+	# put visited nodes into visited list
+	visitedList = []
 
 	while not storage.isEmpty():
-		"*** Using backtrack is more complicated ***"
+		
 		# route.append(storage.pop())
+
+		# dequeue the first path in storage, check if it can lead to the goal
+		# by 'first path', the data sturcture used doesn't matter, pop() will dequeue the correct path
 		route = storage.pop()
 		currentNode = route[-1]
 		currentState = currentNode[0]
@@ -106,12 +111,16 @@ def blindSearch(problem,structure):
 			for state in route:
 				directions.append(state[1])
 			return directions[1:]
+		# check if current node was visited
 		if currentState not in visitedList:
+			# insert current node into visited list
 			visitedList.append(currentState)
+
 			successors = problem.getSuccessors(currentState)
 			for successor in successors:
 				if successor[0] not in visitedList:
-					# storage.push(successor)
+					"*** The whole new 'correct' path is stored instead of just the successor node ***"
+					"*** Backtrack is more complicated ***"
 					successorPath = route[:]
 					successorPath.append(successor)
 					storage.push(successorPath)
