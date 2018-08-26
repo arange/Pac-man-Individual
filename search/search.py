@@ -102,7 +102,10 @@ def blindSearch(problem,structure):
 		# check if current state is the goal state
 		if problem.isGoalState(currentState):
 			# return the correct route (directions) from 2nd node to goal 
-			return [x[1] for x in route][1:]
+			directions = []
+			for state in route:
+				directions.append(state[1])
+			return directions[1:]
 		if currentState not in visitedList:
 			visitedList.append(currentState)
 			successors = problem.getSuccessors(currentState)
