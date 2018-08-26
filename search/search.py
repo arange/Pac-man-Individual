@@ -74,10 +74,6 @@ def tinyMazeSearch(problem):
 
 def blindSearch(problem,structure):
 	"*** YOUR CODE HERE ***"
-
-	# print "Start:", problem.getStartState()
-	# print "Is the start a goal?", problem.isGoalState(problem.getStartState())
-	# print "Start's successors:", problem.getSuccessors(problem.getStartState())
 	
 	# example of state: (34, 16)
 	# example of successors: [((34, 15), 'South', 1), ((33, 16), 'West', 1)]
@@ -108,8 +104,8 @@ def blindSearch(problem,structure):
 		if problem.isGoalState(currentState):
 			# return the correct route (directions) from 2nd node to goal 
 			directions = []
-			for state in route:
-				directions.append(state[1])
+			for node in route:
+				directions.append(node[1])
 			return directions[1:]
 		# check if current node was visited
 		if currentState not in visitedList:
@@ -163,7 +159,20 @@ def breadthFirstSearch(problem):
 def uniformCostSearch(problem):
 	"""Search the node of least total cost first."""
 	"*** YOUR CODE HERE ***"
-	util.raiseNotDefined()
+# 	Insert the root into the queue
+#   While the queue is not empty
+#       Dequeue the maximum priority element from the queue
+#       (If priorities are same, alphabetically smaller path is chosen)
+#       If the path is ending in the goal state, print the path and exit
+#       Else
+#             Insert all the children of the dequeued element, with the cumulative costs as priority
+	# storage stores all the possible routes
+	storage = util.PriorityQueue()
+	# manually put starting node into storage
+	startState = problem.getStartState()
+	startNode = (startState,'Stop',0)
+	storage.push([startNode],0)
+
 
 def nullHeuristic(state, problem=None):
 	"""
