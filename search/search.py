@@ -191,7 +191,6 @@ def uniformCostSearch(problem):
 
 			successors = problem.getSuccessors(currentState)
 			for successor in successors:
-				# print successor
 				if successor[0] not in visitedList:
 					successorPath = route[:]
 					p_successor = (successor[0], successor[1], successor[2] + currentNode[2])
@@ -211,7 +210,45 @@ def nullHeuristic(state, problem=None):
 def aStarSearch(problem, heuristic=nullHeuristic):
 	"""Search the node that has the lowest combined cost and heuristic first."""
 	"*** YOUR CODE HERE ***"
-	util.raiseNotDefined()
+	# storage stores all the possible routes
+	storage = util.PriorityQueue()
+	# manually put starting node into storage
+	startState = problem.getStartState()
+	startNode = (startState,'Stop',0)
+	# initially the cost of starting point is set to 0
+	storage.push([startNode], heuristic(startState, problem))
+
+	visitedList = []
+
+	while not storage.isEmpty():
+		# Dequeue the maximum priority element from the queue
+		route = storage.pop()
+
+		currentNode = route[-1]
+		currentState = currentNode[0]
+
+		if problem.isGoalState(currentState):
+			# return the correct route (directions) from 2nd node to goal 
+			directions = []
+			for node in route:
+				directions.append(node[1])
+			return directions[1:]
+
+		# check if current node was visited
+		if currentState not in visitedList:
+			# insert current node into visited list
+			visitedList.append(currentState)
+
+			successors = problem.getSuccessors(currentState)
+			for successor in successors:
+				if successor[0] not in visitedList:
+					successorPath = route[:]
+					p_successor = (successor[0], successor[1], successor[2] + currentNode[2])
+					newPriority = p_successor[2] + heuristic(successor[0], problem)
+					successorPath.append(p_successor)
+					storage.push(successorPath, newPriority)
+
+	return False
 
 
 # Abbreviations
