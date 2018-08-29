@@ -389,9 +389,7 @@ def cornersHeuristic(state, problem):
     # manhattan distance to the farest corner:passed
     h = 0
     for corner in state[1]:
-        x, y = state[0]
-        xc, yc = corner
-        ht = abs(x-xc) + abs(y-yc)
+        ht = util.manhattanDistance(state[0],corner)
         if ht > h:
             h = ht
 
@@ -489,20 +487,61 @@ def foodHeuristic(state, problem):
     """
     position, foodGrid = state
     "*** YOUR CODE HERE ***"
-    # goal counting: expanded 12,000+
+    "goal counting: expanded 12,000+"
     # h = foodGrid.count()
 
-    # farest food: expanded 9,000+
-    # foodList = foodGrid.asList()
+    "farest food(manhattan): expanded 9,000+"
+    foodList = foodGrid.asList()
+    h = 0
+    for food in foodList:
+        ht = util.manhattanDistance(position,food)
+        if ht > h:
+            h = ht
 
-    # x,y = position
+    "average distance(manhattan): expanded 11,000+"
+    # foodList = foodGrid.asList()
+    # if len(foodList) == 0:
+    #     return 0
+    # distances = []
+    # for food in foodList:
+    #     distances.append(util.manhattanDistance(position,food))
+    # try:
+    #     avg = sum(distances)/len(distances)
+    # except:
+    #     avg = 0
+    # return avg
+
+    "farest food(euclidean): expanded 10,000+"
+    # def euclideanDistance(xy1,xy2):
+    #     return ( (xy1[0] - xy2[0]) ** 2 + (xy1[1] - xy2[1]) ** 2 ) ** 0.5
+    # foodList = foodGrid.asList()
     # h = 0
     # for food in foodList:
-    #     xf,yf = food
-    #     ht = abs(x-xf) + abs(y-yf)
+    #     ht = euclideanDistance(position,food)
     #     if ht > h:
     #         h = ht
 
+    "nearest food(manhattan): expanded 13,000+"
+    # foodList = foodGrid.asList()
+    # if len(foodList) == 0:
+    #     return 0
+    # h = 9999
+    # for food in foodList:
+    #     ht = util.manhattanDistance(position,food)
+    #     if ht < h:
+    #         h = ht
+
+    "nearest food(euclidean): expanded 14,000+"
+    # def euclideanDistance(xy1,xy2):
+    #     return ( (xy1[0] - xy2[0]) ** 2 + (xy1[1] - xy2[1]) ** 2 ) ** 0.5
+    # foodList = foodGrid.asList()
+    # if len(foodList) == 0:
+    #     return 0
+    # h = 9999
+    # for food in foodList:
+    #     ht = euclideanDistance(position,food)
+    #     if ht < h:
+    #         h = ht
 
 
     return h
