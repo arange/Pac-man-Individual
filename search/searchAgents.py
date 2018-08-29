@@ -288,7 +288,6 @@ class CornersProblem(search.SearchProblem):
         # Please add any code here which you would like to use
         # in initializing the problem
         "*** YOUR CODE HERE ***"
-        unvisitedCorners = 4
         # state(coordinate, [ramaining corners])
 
     def getStartState(self):
@@ -305,7 +304,6 @@ class CornersProblem(search.SearchProblem):
         Returns whether this search state is a goal state of the problem.
         """
         "*** YOUR CODE HERE ***"
-        # print state
         if len(state[1]) == 0 or [state[0]] == state[1]:
             return True
         return False
@@ -491,10 +489,23 @@ def foodHeuristic(state, problem):
     # h = foodGrid.count()
 
     "farest food(manhattan): expanded 9,000+"
+    # foodList = foodGrid.asList()
+    # h = 0
+    # for food in foodList:
+    #     ht = util.manhattanDistance(position,food)
+    #     if ht > h:
+    #         h = ht
+
+    "farest food(maze distance): expanded 4,000+"
+    """
+    This method has the best performance among all 
+    because it takes the actual maze distance as heuristic 
+    which is the most accurate heuristic
+    """
     foodList = foodGrid.asList()
     h = 0
     for food in foodList:
-        ht = util.manhattanDistance(position,food)
+        ht = mazeDistance(position,food,problem.startingGameState)
         if ht > h:
             h = ht
 
@@ -575,7 +586,7 @@ class ClosestDotSearchAgent(SearchAgent):
         problem = AnyFoodSearchProblem(gameState)
 
         "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+        return search.aStarSearch(problem)
 
 class AnyFoodSearchProblem(PositionSearchProblem):
     """
@@ -611,7 +622,7 @@ class AnyFoodSearchProblem(PositionSearchProblem):
         x,y = state
 
         "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+        return self.food[x][y]
 
 def mazeDistance(point1, point2, gameState):
     """
